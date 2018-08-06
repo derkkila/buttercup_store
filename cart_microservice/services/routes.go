@@ -6,6 +6,7 @@ import (
   "log"
   "fmt"
   "encoding/json"
+  "./mux-master"
 )
 
 // Defines a single route, e.g. a human readable name, HTTP method and the
@@ -29,6 +30,85 @@ var routes = Routes{
                 db, err := sql.Open("mysql","root:test@tcp(127.0.0.1:3307)/cart")
 
                 rows,err2 := db.Query("select * from cart_list")
+
+                log.Println(rows)
+                log.Println(err2)
+
+                var status = http.StatusBadRequest
+
+                switch {
+                case err2 == sql.ErrNoRows:
+                  w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+                  w.WriteHeader(http.StatusOK)
+                  w.Write([]byte("{\"result\":\"OK\"}"))
+                  return
+                case err2 != nil:
+                        log.Fatal(err)
+                        w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+                        w.WriteHeader(http.StatusOK)
+                        w.Write([]byte("{\"result\":\"OK\"}"))
+                        return
+                default:
+                        status = http.StatusOK
+
+                        defer rows.Close()
+
+                        columns, err := rows.Columns()
+                        if err != nil {
+                          log.Fatal(err)
+                          status = http.StatusInternalServerError
+                        }
+
+                        count := len(columns)
+                        tableData := make([]map[string]interface{}, 0)
+                        values := make([]interface{}, count)
+                        valuePtrs := make([]interface{}, count)
+                        for rows.Next() {
+                            for i := 0; i < count; i++ {
+                                valuePtrs[i] = &values[i]
+                            }
+                            rows.Scan(valuePtrs...)
+                            entry := make(map[string]interface{})
+                            for i, col := range columns {
+                                var v interface{}
+                                val := values[i]
+                                b, ok := val.([]byte)
+                                if ok {
+                                    v = string(b)
+                                } else {
+                                    v = val
+                                }
+                                entry[col] = v
+                            }
+                            tableData = append(tableData, entry)
+                        }
+                        jsonData, err := json.Marshal(tableData)
+                        if err != nil {
+                          log.Fatal(err)
+                          status = http.StatusInternalServerError
+                        }
+                        fmt.Println(string(jsonData))
+
+                        defer db.Close()
+
+                        w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+                        w.Header().Set("Access-Control-Allow-Origin", "*")
+                        w.WriteHeader(status)
+                        w.Write([]byte(jsonData))
+                }
+        },
+  },
+  Route{
+    "GetUserCarts",                                     // Name
+    "GET",                                            // HTTP method
+    "/cart/{userId}",                          // Route pattern
+    func(w http.ResponseWriter, r *http.Request) {
+                log.Println("Calling User /cart/")
+                var id = mux.Vars(r)["userId"]
+
+                db, err := sql.Open("mysql","root:test@tcp(127.0.0.1:3307)/cart")
+
+                rows,err2 := db.Query("select * from cart_list where user_id=?",id)
 
                 log.Println(rows)
                 log.Println(err2)
