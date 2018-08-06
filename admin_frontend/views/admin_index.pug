@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  a(href='/admin/add_product') Add Product
+  script(src='/javascripts/ajaxLoadData.js')
+  div
+      table#productList
+        thead
+          tr
+            th Id
+            th Name
+            th Type
+            th Category
+            th Price
+            th Quantity
+            th
+            th
+        tbody

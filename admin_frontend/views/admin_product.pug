@@ -1,0 +1,34 @@
+extends layout
+
+block content
+  h1= title
+  form(name='product', method='post', action='http://localhost:6767/products/'+(undefined===id ? '' : id))
+      | Product Name:
+      input(type='text', name='name', value=(undefined===name ? '' : name))
+      br
+      | Description:
+      br
+      textarea(name='description', rows='10', cols='50')=(undefined===description ? '' : description)
+      br
+      | Product Type:
+      select(name='prodtype')
+        option(value='book', selected=(undefined===prodtype || prodtype=='book' || prodtype=='ebook' ? true : false)) Book
+        option(value='video', selected=(undefined!==prodtype && prodtype=='video' ? true : false)) Video
+        option(value='game', selected=(undefined!==prodtype && prodtype=='game' ? true : false)) Game
+        option(value='other', selected=(undefined!==prodtype && prodtype=='other' ? true : false)) Other
+      br
+      | Product Category:
+      select(name='category')
+        option(value='entertainment', selected=(undefined===category || category=='entertainment' ? true : false)) Entertainment
+        option(value='education', selected=(undefined!==category && (category=='education' || category=='how-to') ? true : false)) Education
+        option(value='other', selected=(undefined!==category && category=='other' ? true : false)) Other
+      br
+      | Price:
+      input(type='text', name='price', value=(undefined===price ? '' : price))
+      br
+      | Quantity:
+      input(type='text', name='qty', value=(undefined===qty ? '0' : qty))
+      br
+      br
+      input(type='submit', value='Submit')
+      input(type='button', value='Cancel', onclick="window.location.href='/admin'")

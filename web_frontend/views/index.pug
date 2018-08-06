@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  script(src='/javascripts/ajaxLoadData.js')
+  div
+      table#productList
+        thead
+          tr
+            th Name
+            th Type
+            th Category
+            th Price
+            th Quantity
+        tbody

@@ -9,6 +9,7 @@ import (
   "strconv"
   "encoding/json"
   "./mux-master"
+  "strings"
 )
 
 // Defines a single route, e.g. a human readable name, HTTP method and the
@@ -23,6 +24,114 @@ HandlerFunc http.HandlerFunc
 type Routes []Route
 // Initialize our routes
 var routes = Routes{
+  Route{
+    "GetAllProducts",                                     // Name
+    "GET",                                            // HTTP method
+    "/products/",                          // Route pattern
+    func(w http.ResponseWriter, r *http.Request) {
+                log.Println("Calling /products/")
+                db, err := sql.Open("mysql","root:test@tcp(127.0.0.1:3306)/products")
+
+                rows,err2 := db.Query("select *from product_list")
+
+                var status = http.StatusBadRequest
+
+                switch {
+                case err2 == sql.ErrNoRows:
+                        log.Printf("No Product with that ID.")
+                        status = http.StatusNoContent
+                case err2 != nil:
+                        log.Fatal(err)
+                        status = http.StatusInternalServerError
+                default:
+                        status = http.StatusOK
+                }
+
+                defer rows.Close()
+
+                columns, err := rows.Columns()
+                if err != nil {
+                  log.Fatal(err)
+                  status = http.StatusInternalServerError
+                }
+
+                count := len(columns)
+                tableData := make([]map[string]interface{}, 0)
+                values := make([]interface{}, count)
+                valuePtrs := make([]interface{}, count)
+                for rows.Next() {
+                    for i := 0; i < count; i++ {
+                        valuePtrs[i] = &values[i]
+                    }
+                    rows.Scan(valuePtrs...)
+                    entry := make(map[string]interface{})
+                    for i, col := range columns {
+                        var v interface{}
+                        val := values[i]
+                        b, ok := val.([]byte)
+                        if ok {
+                            v = string(b)
+                        } else {
+                            v = val
+                        }
+                        entry[col] = v
+                    }
+                    tableData = append(tableData, entry)
+                }
+                jsonData, err := json.Marshal(tableData)
+                if err != nil {
+                  log.Fatal(err)
+                  status = http.StatusInternalServerError
+                }
+                fmt.Println(string(jsonData))
+
+                defer db.Close()
+
+                w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+                w.Header().Set("Access-Control-Allow-Origin", "*")
+                w.WriteHeader(status)
+                w.Write([]byte(jsonData))
+        },
+  },
+  Route{
+    "DeleteProduct",                                     // Name
+    "GET",                                            // HTTP method
+    "/products/delete/{productId}",                          // Route pattern
+    func(w http.ResponseWriter, r *http.Request) {
+                log.Println("Deleting /products/{productId}")
+                var productId = mux.Vars(r)["productId"]
+
+                db, err := sql.Open("mysql","root:test@tcp(127.0.0.1:3306)/products")
+
+                stmt, err := db.Prepare("delete from product_list where id = ?")
+
+                res, err := stmt.Exec(productId)
+
+                affect, err := res.RowsAffected()
+
+                log.Println(affect)
+
+                var status = http.StatusBadRequest
+
+                switch {
+                case err == sql.ErrNoRows:
+                        log.Printf("No Product with that ID.")
+                        status = http.StatusNoContent
+                case err != nil:
+                        log.Fatal(err)
+                        status = http.StatusInternalServerError
+                default:
+                        status = http.StatusOK
+                }
+
+                log.Println(status)
+
+                defer db.Close()
+
+                log.Println("Redirect back to admin")
+                http.Redirect(w, r, "http://localhost:3000/admin/", http.StatusSeeOther)
+        },
+  },
   Route{
     "GetProduct",                                     // Name
     "GET",                                            // HTTP method
@@ -42,7 +151,7 @@ var routes = Routes{
                   price float64
                   qty int
                 )
-                err2 := db.QueryRow("select *from product_list where id = ?", productId).Scan(&id, &name, &description, &prodtype, &category, &price, &qty)
+                err2 := db.QueryRow("select * from product_list where id = ?", productId).Scan(&id, &name, &description, &prodtype, &category, &price, &qty)
 
                 var status = http.StatusBadRequest
 
@@ -119,9 +228,16 @@ var routes = Routes{
     fmt.Println(affect)
 
 
-    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-    w.WriteHeader(http.StatusOK)
-    w.Write([]byte("{\"result\":\"OK\"}"))
+    if strings.Contains(r.Referer(), "http://localhost:3000/admin/edit_product"){
+      log.Println("Redirect back to admin")
+      http.Redirect(w, r, "http://localhost:3000/admin/edit_product?id="+id, http.StatusSeeOther)
+    } else {
+      log.Println(r.Referer())
+      log.Println("Return JSON")
+      w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+      w.WriteHeader(http.StatusOK)
+      w.Write([]byte("{\"result\":\"OK\"}"))
+    }
   },
   },
   Route{
@@ -200,9 +316,15 @@ var routes = Routes{
 
       log.Println(id)
 
-      w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-      w.WriteHeader(http.StatusOK)
-      w.Write([]byte("{\"result\":\"OK\"}"))
+      if r.Referer()=="http://localhost:3000/admin/add_product"{
+        log.Println("Redirect back to admin")
+        http.Redirect(w, r, "http://localhost:3000/admin/", http.StatusSeeOther)
+      } else {
+        log.Println("Return JSON")
+        w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+        w.WriteHeader(http.StatusOK)
+        w.Write([]byte("{\"result\":\"OK\"}"))
+      }
     },
   },
 }
