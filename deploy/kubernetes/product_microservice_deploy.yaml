@@ -1,0 +1,21 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: productservice 
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        role: productservice
+        tier: middleware 
+    spec:
+      containers:
+        - name: productservice
+          image: derkkila/product_microservice
+          ports:
+            - name: productservice
+              containerPort: 6767
