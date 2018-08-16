@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  productdb:
+    build: productdb
+    image: derkkila/product_db
+    ports:
+     - "3306:3306"
+
+  productservice:
+    build: productservice
+    image: derkkila/product_microservice
+    ports:
+      - "6767:6767"
