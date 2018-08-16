@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: productservice 
+  namespace: buttercup-store
+  labels:
+    app: buttercup-store
+    tier: middleware
+spec:
+  type: LoadBalancer
+  selector:
+    name: productservice
+  ports:
+    - name: productservice
+      port: 6767
+     targetPort: 6767 
