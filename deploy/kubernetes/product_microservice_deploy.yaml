@@ -10,12 +10,14 @@ spec:
     metadata:
       labels:
         app: buttercup-store
+        name: productservice
         role: productservice
         tier: middleware 
     spec:
       containers:
         - name: productservice
           image: derkkila/product_microservice
+          imagePullPolicy: Always
           ports:
             - name: productservice
               containerPort: 6767
