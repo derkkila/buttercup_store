@@ -18,7 +18,8 @@ spec:
     spec:
       containers:
         - name: productdb
-          image: derkkila/product_db
+          #image: derkkila/product_db
+          image: matthewmodestino/productdb:0.0.1
           imagePullPolicy: Always
           ports:
             - name: mysql 
