@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1= title
-  form(name='product', method='post', action='http://localhost:6767/products/'+(undefined===id ? '' : id))
+  form(name='product', method='post', action='http://productservice:6767/products/'+(undefined===id ? '' : id))
       | Product Name:
       input(type='text', name='name', value=(undefined===name ? '' : name))
       br

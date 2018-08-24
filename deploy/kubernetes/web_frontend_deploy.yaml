@@ -1,0 +1,23 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webfrontend
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: webfrontend
+        role: webfrontend
+        tier: client
+    spec:
+      containers:
+        - name: webfrontend
+          image: derkkila/web_frontend
+          imagePullPolicy: Always
+          ports:
+            - name: webfrontend
+              containerPort: 8088

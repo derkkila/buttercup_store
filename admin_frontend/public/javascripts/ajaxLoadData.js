@@ -6,7 +6,7 @@ $(document).ready(function() {
 	function ajaxGet(){
 		$.ajax({
 			type : "GET",
-			url : "http://localhost:6767/products/",
+			url : "http://productservice:6767/products/",
 			success: function(result){
 				$.each(result, function(i, product){
 
@@ -18,7 +18,7 @@ $(document).ready(function() {
                     '<td>' + product.price + '</td>' +
                     '<td>' + product.qty + '</td>' +
                     '<td><a href="/admin/edit_product?id='+product.id+'">Edit</a></td>' +
-                    '<td><a href="http://localhost:6767/products/delete/'+product.id+'">Delete</a></td>' +
+                    '<td><a href="http://productservice:6767/products/delete/'+product.id+'">Delete</a></td>' +
                     '</tr>';
 
 					$('#productList tbody').append(productRow);

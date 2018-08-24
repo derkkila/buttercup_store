@@ -1,0 +1,23 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cartservice
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: cartservice
+        role: cartservice
+        tier: middleware
+    spec:
+      containers:
+        - name: cartservice
+          image: derkkila/cart_microservice
+          imagePullPolicy: Always
+          ports:
+            - name: cartservice
+              containerPort: 4201

@@ -13,9 +13,9 @@ router.get('/shop', function(req, res, next) {
 router.get('/shop/cart', function(req, res, next) {
   var id = 1;
   const http = require('http');
-  console.log('http://localhost:4201/cart/'+id)
+  console.log('http://cartservice:4201/cart/'+id)
 
-  http.get('http://localhost:4201/cart/'+id, (resp) => {
+  http.get('http://cartservice:4201/cart/'+id, (resp) => {
     let data = '';
 
     // A chunk of data has been recieved.
@@ -38,7 +38,7 @@ router.get('/shop/:id', function(req, res, next) {
   var id = req.params.id;
   const http = require('http');
 
-  http.get('http://localhost:6767/products/'+id, (resp) => {
+  http.get('http://productservice:6767/products/'+id, (resp) => {
     let data = '';
 
     // A chunk of data has been recieved.

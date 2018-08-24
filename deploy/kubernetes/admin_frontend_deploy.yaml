@@ -1,0 +1,23 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: adminfrontend
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: adminfrontend
+        role: adminfrontend
+        tier: client
+    spec:
+      containers:
+        - name: adminfrontend
+          image: derkkila/admin_frontend
+          imagePullPolicy: Always
+          ports:
+            - name: adminfrontend
+              containerPort: 3000

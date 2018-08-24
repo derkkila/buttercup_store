@@ -30,7 +30,7 @@ var routes = Routes{
     "/products/",                          // Route pattern
     func(w http.ResponseWriter, r *http.Request) {
                 log.Println("Calling /products/")
-                db, err := sql.Open("mysql","root:test@tcp(127.0.0.1:3306)/products")
+                db, err := sql.Open("mysql","root:test@tcp(productdb:3306)/products")
 
                 rows,err2 := db.Query("select *from product_list")
 
@@ -101,7 +101,7 @@ var routes = Routes{
                 log.Println("Deleting /products/{productId}")
                 var productId = mux.Vars(r)["productId"]
 
-                db, err := sql.Open("mysql","root:test@tcp(127.0.0.1:3306)/products")
+                db, err := sql.Open("mysql","root:test@tcp(productdb:3306)/products")
 
                 stmt, err := db.Prepare("delete from product_list where id = ?")
 
@@ -138,7 +138,7 @@ var routes = Routes{
     "/products/{productId}",                          // Route pattern
     func(w http.ResponseWriter, r *http.Request) {
                 log.Println("Calling /products/{productId}")
-                db, err := sql.Open("mysql","root:test@tcp(127.0.0.1:3306)/products")
+                db, err := sql.Open("mysql","root:test@tcp(productdb:3306)/products")
 
                 var productId = mux.Vars(r)["productId"]
 
@@ -205,7 +205,7 @@ var routes = Routes{
     log.Println(v)
     log.Println(product)
 
-    db, errdb := sql.Open("mysql","root:test@tcp(127.0.0.1:3306)/products")
+    db, errdb := sql.Open("mysql","root:test@tcp(productdb:3306)/products")
     if errdb != nil {
   		panic(errdb)
   	}
@@ -250,7 +250,7 @@ var routes = Routes{
     var id = mux.Vars(r)["productId"]
     var qty = mux.Vars(r)["qty"]
 
-    db, errdb := sql.Open("mysql","root:test@tcp(127.0.0.1:3306)/products")
+    db, errdb := sql.Open("mysql","root:test@tcp(productdb:3306)/products")
     if errdb != nil {
   		panic(errdb)
   	}
@@ -294,7 +294,7 @@ var routes = Routes{
       log.Println(v)
       log.Println(product)
 
-      db, errdb := sql.Open("mysql","root:test@tcp(127.0.0.1:3306)/products")
+      db, errdb := sql.Open("mysql","root:test@tcp(productdb:3306)/products")
       if errdb != nil {
     		panic(errdb)
     	}

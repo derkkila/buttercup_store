@@ -6,7 +6,7 @@ block content
   p
   | #{description}
   br
-  form(name='product', method='post', action='http://localhost:4201/cart/add/')
+  form(name='product', method='post', action='http://cartservice:4201/cart/add/')
       input(type="hidden" name="user_id" value=1)
       input(type="hidden" name="product_id" value=id)
       input(type="hidden" name="qty" value=1)

@@ -18,7 +18,7 @@ router.get('/admin/edit_product', function(req, res, next) {
   var id = req.query.id;
   const http = require('http');
 
-  http.get('http://localhost:6767/products/'+id, (resp) => {
+  http.get('http://productservice:6767/products/'+id, (resp) => {
     let data = '';
 
     // A chunk of data has been recieved.

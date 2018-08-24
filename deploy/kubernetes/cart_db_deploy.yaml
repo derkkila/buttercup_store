@@ -1,0 +1,26 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cartdb
+  labels:
+    name: cartdb
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: cartdb
+        role: mysql
+        tier: db
+    spec:
+      containers:
+        - name: cartdb
+          #image: derkkila/product_db
+          image: derkkila/cart_db
+          imagePullPolicy: Always
+          ports:
+            - name: mysql
+              containerPort: 3306
