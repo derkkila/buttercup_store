@@ -15,7 +15,7 @@ $(document).ready(function() {
                     '<td>' + product.type + '</td>' +
                     '<td>' + product.category + '</td>' +
                     '<td>' + product.price + '</td>' +
-                    '<td>' + product.qty + '</td> ' +
+                    '<td>' + product.qty + '</td>' +
                     '</tr>';
 
 					$('#productList tbody').append(productRow);
