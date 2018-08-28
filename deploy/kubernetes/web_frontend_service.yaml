@@ -1,39 +1,35 @@
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: webfrontend
-  labels:
-    name: webfrontend
-  namespace: buttercup-store
-spec:
-  ports:
-    # the port that this service should serve on
-  - port: 8088
-    targetPort: 8088
-  selector:
-    name: webfrontend
-
-
-
-
-
-
+#
 #---
 #apiVersion: v1
 #kind: Service
 #metadata:
-#  name: productdb
-#  namespace: buttercup-store
+#  name: webfrontend
 #  labels:
-#    app: buttercup-store
-#    tier: db
+#    name: webfrontend
+#  namespace: buttercup-store
 #spec:
-#  type: LoadBalancer
-#  selector:
-#    name:productdb
-#    tier: db
 #  ports:
-#    - name: mysql
-#      port: 3306
-#      targetPort: 3306
+#    # the port that this service should serve on
+#  - port: 8088
+#    targetPort: 8088
+#  selector:
+#    name: webfrontend
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webfrontend 
+  namespace: buttercup-store
+  labels:
+    app: buttercup-store
+    tier: frontend
+spec:
+  type: LoadBalancer
+  selector:
+    name: webfrontend
+  ports:
+    - name: webfrontend
+      port: 8088
+      targetPort: 8088
