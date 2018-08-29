@@ -6,7 +6,7 @@ $(document).ready(function() {
 	function ajaxGet(){
 		$.ajax({
 			type : "GET",
-			url : "http://"+window.location.hostname+":6767/products/",
+			url : "http://"+window.location.hostname+"/products/",
 			success: function(result){
 				$.each(result, function(i, product){
 
