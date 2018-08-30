@@ -218,4 +218,28 @@ var routes = Routes{
             http.Redirect(w, r, r.Referer(), http.StatusSeeOther)
         },
   },
+  Route{
+    "ClearCart",                                     // Name
+    "GET",                                            // HTTP method
+    "/cart/clear/{userId}",                          // Route pattern
+    func(w http.ResponseWriter, r *http.Request) {
+            log.Println("Clearing /cart for User")
+
+            var id = mux.Vars(r)["userId"]
+
+            db, err := sql.Open("mysql","root:test@tcp(cartdb:3306)/cart")
+
+            rows,err2 := db.Query("delete* from cart_list where user_id=?",id)
+
+            log.Println(rows)
+            log.Println(err2)
+
+            var status = http.StatusBadRequest
+
+            defer db.Close()
+
+            log.Println("Redirect back to shop")
+            http.Redirect(w, r, "/shop/cart", http.StatusSeeOther)
+        },
+  },
 }
