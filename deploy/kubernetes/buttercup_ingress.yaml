@@ -35,6 +35,10 @@ spec:
         backend:
           serviceName: webfrontend
           servicePort: 8088
+      - path: /wstatic
+        backend:
+          serviceName: webfrontend
+          servicePort: 8088
       - path: /admin
         backend:
           serviceName: adminfrontend
