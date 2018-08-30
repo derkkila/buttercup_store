@@ -27,7 +27,7 @@ var routes = Routes{
     "/cart/",                          // Route pattern
     func(w http.ResponseWriter, r *http.Request) {
                 log.Println("Calling /cart/")
-                db, err := sql.Open("mysql","root:test@tcp(cartdb:3307)/cart")
+                db, err := sql.Open("mysql","root:test@tcp(cartdb:3306)/cart")
 
                 rows,err2 := db.Query("select * from cart_list")
 
@@ -106,7 +106,7 @@ var routes = Routes{
                 log.Println("Calling User /cart/")
                 var id = mux.Vars(r)["userId"]
 
-                db, err := sql.Open("mysql","root:test@tcp(cartdb:3307)/cart")
+                db, err := sql.Open("mysql","root:test@tcp(cartdb:3306)/cart")
 
                 rows,err2 := db.Query("select * from cart_list where user_id=?",id)
 
@@ -192,7 +192,7 @@ var routes = Routes{
 
             log.Println(v)
 
-            db, errdb := sql.Open("mysql","root:test@tcp(cartdb:3307)/cart")
+            db, errdb := sql.Open("mysql","root:test@tcp(cartdb:3306)/cart")
             if errdb != nil {
           		panic(errdb)
           	}
