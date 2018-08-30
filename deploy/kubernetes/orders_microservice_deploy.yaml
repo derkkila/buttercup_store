@@ -15,7 +15,7 @@ spec:
         tier: middleware
     spec:
       containers:
-        - name: cartservice
+        - name: ordersservice
           image: derkkila/orders_microservice
           imagePullPolicy: Always
           ports:
