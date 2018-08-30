@@ -53,7 +53,7 @@ spec:
           servicePort: 4201
       - path: /orders
         backend:
-          serviceName: orders
+          serviceName: ordersservice
           servicePort: 4201
       - path: /products
         backend:
