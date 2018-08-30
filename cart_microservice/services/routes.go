@@ -235,14 +235,15 @@ var routes = Routes{
             if err2 != nil {
           		panic(err2)
           	}
-            
+
             log.Println(rows)
             log.Println(err2)
 
             defer db.Close()
 
-            log.Println("Redirect back to shop")
-            http.Redirect(w, r, "/shop/cart", http.StatusSeeOther)
+            w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+            w.WriteHeader(http.StatusOK)
+            w.Write([]byte("{\"result\":\"OK\"}"))
         },
   },
 }

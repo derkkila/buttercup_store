@@ -215,6 +215,14 @@ var routes = Routes{
             log.Println(id)
 
             log.Println("Redirect back to shop")
+
+            var next = "/cart/clear/"+r.Form.Get("user_id")
+
+            request, _ := http.NewRequest("GET", next, bytes.NewBuffer())
+            request.Header.Set("Content-Type", "application/json")
+            client := &http.Client{}
+            response, err := client.Do(request)
+
             http.Redirect(w, r, r.Referer(), http.StatusSeeOther)
         },
   },
