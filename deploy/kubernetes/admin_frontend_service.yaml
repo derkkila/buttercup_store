@@ -7,16 +7,15 @@ metadata:
     name: adminfrontend
   namespace: buttercup-store
 spec:
+  #type: LoadBalancer
+  type: ClusterIP
   ports:
     # the port that this service should serve on
-  - port: 3000
+  - protocol: TCP
+    port: 3000
     targetPort: 3000
   selector:
     name: adminfrontend
-
-
-
-
 
 
 #---
