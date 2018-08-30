@@ -218,12 +218,9 @@ var routes = Routes{
 
             var next = "http://cartservice:4201/cart/clear/"+r.Form.Get("user_id")
 
-            request, _ := http.NewRequest("GET", next, bytes.NewBuffer())
-            request.Header.Set("Content-Type", "application/json")
-            client := &http.Client{}
-            response, err := client.Do(request)
+            resp, err := http.Get(next)
 
-            log.Println(response)
+            log.Println(resp)
 
             if err != nil {
           		panic(err)
