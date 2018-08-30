@@ -51,6 +51,10 @@ spec:
         backend:
           serviceName: cartservice
           servicePort: 4201
+      - path: /orders
+        backend:
+          serviceName: orders
+          servicePort: 4201
       - path: /products
         backend:
           serviceName: productservice
