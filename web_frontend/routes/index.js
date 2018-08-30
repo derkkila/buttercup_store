@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.redirect('/shop');
+  res.render('error', { message: 'Buttercup Games Root' });
 });
 
 router.get('/shop', function(req, res, next) {

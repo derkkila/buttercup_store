@@ -3,9 +3,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: adminfrontend
-  labels:
-    name: adminfrontend
   namespace: buttercup-store
+  labels:
+    app: buttercup-store
+    tier: frontend
 spec:
   #type: LoadBalancer
   type: ClusterIP
