@@ -1,4 +1,4 @@
-create database order;
+create database orders;
 use orders;
 
 CREATE TABLE order_list
