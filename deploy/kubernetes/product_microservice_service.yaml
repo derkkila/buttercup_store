@@ -1,39 +1,38 @@
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: productservice
-  labels:
-    name: productservice
-  namespace: buttercup-store
-spec:
-  ports:
-    # the port that this service should serve on
-  - port: 6767 
-    targetPort: 6767
-  selector:
-    name: productservice
-
-
-
-
-
-
 #---
 #apiVersion: v1
 #kind: Service
 #metadata:
-#  name: productdb 
-#  namespace: buttercup-store
+#  name: productservice
 #  labels:
-#    app: buttercup-store
-#    tier: db
+#    name: productservice
+#  namespace: buttercup-store
 #spec:
-#  type: LoadBalancer
-#  selector:
-#    name:productdb 
-#    tier: db
 #  ports:
-#    - name: mysql
-#      port: 3306
-#      targetPort: 3306
+#    # the port that this service should serve on
+#  - port: 6767 
+#    targetPort: 6767
+#  selector:
+#    name: productservice
+
+
+
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  productservice 
+  namespace: buttercup-store
+  labels:
+    app: buttercup-store
+    tier: middleware
+spec:
+  type: LoadBalancer
+  selector:
+    name: productservice
+  ports:
+    - name: productservice
+      port: 6767
+      targetPort: 6767
