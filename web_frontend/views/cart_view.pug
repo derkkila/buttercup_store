@@ -21,7 +21,7 @@ block content
             - total = total + item.qty
             - qty = qty + item.qty
             td
-              a(href="/cart/delete/#{item.user_id}/#{item.product_id}") Remove
+              a(href="/cart/delete/"+#{item.user_id}+"/"+#{item.product_id}) Remove
   br
   h2= total
   br
@@ -30,5 +30,5 @@ block content
       input(type="hidden" name="total" value=total)
       input(type="hidden" name="qty" value=qty)
       input(type='submit', value='Place Order')
-  form(name='clear', method='post', action='/cart/clear/1')
+  form(name='clear', method='get', action='/cart/clear/1')
       input(type='submit', value='Clear Cart')
