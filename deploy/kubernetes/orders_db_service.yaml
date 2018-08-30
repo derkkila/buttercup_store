@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ordersdb
+  labels:
+    name: ordersdb
+  namespace: buttercup-store
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 3306
+    targetPort: 3306
+  selector:
+    name: ordersdb
+
+
+
+
+
+
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: productdb
+#  namespace: buttercup-store
+#  labels:
+#    app: buttercup-store
+#    tier: db
+#spec:
+#  type: LoadBalancer
+#  selector:
+#    name:productdb
+#    tier: db
+#  ports:
+#    - name: mysql
+#      port: 3306
+#      targetPort: 3306

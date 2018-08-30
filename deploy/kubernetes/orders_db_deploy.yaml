@@ -1,0 +1,26 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ordersdb
+  labels:
+    name: ordersdb
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: ordersdb
+        role: mysql
+        tier: db
+    spec:
+      containers:
+        - name: ordersdb
+          #image: derkkila/product_db
+          image: derkkila/orders_db
+          imagePullPolicy: Always
+          ports:
+            - name: mysql
+              containerPort: 3306
