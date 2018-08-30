@@ -7,6 +7,7 @@ order_id INTEGER NOT NULL AUTO_INCREMENT,
 user_id INTEGER,
 total DECIMAL(12, 2),
 qty INTEGER
+primary key (order_id)
 ) COMMENT='Lists orders placed by users';
 
 CREATE TABLE order_products
