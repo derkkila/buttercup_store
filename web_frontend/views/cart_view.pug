@@ -3,6 +3,7 @@ extends layout
 block content
   h1= title
   div
+  - var total = 0
       table#productList
         thead
           tr
@@ -16,6 +17,13 @@ block content
             th= item.product_id
             th= item.user_id
             th= item.qty
+            - total = total + item.qty
             th
   br
   h2= total
+  br
+  form(name='order', method='post', action='/orders/add/')
+      input(type="hidden" name="user_id" value=1)
+      input(type="hidden" name="total" value=total)
+      input(type="hidden" name="qty" value=qty)
+      input(type='submit', value='Place Order')
