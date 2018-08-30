@@ -3,7 +3,7 @@ use orders;
 
 CREATE TABLE order_list
 (
-order_id INTEGER,
+order_id INTEGER NOT NULL AUTO_INCREMENT,
 user_id INTEGER,
 total DECIMAL(12, 2),
 qty INTEGER
