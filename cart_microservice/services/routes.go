@@ -228,13 +228,16 @@ var routes = Routes{
             var id = mux.Vars(r)["userId"]
 
             db, err := sql.Open("mysql","root:test@tcp(cartdb:3306)/cart")
-
-            rows,err2 := db.Query("delete* from cart_list where user_id=?",id)
-
+            if err != nil {
+          		panic(err)
+          	}
+            rows,err2 := db.Query("delete from cart_list where user_id=?",id)
+            if err2 != nil {
+          		panic(err2)
+          	}
+            
             log.Println(rows)
             log.Println(err2)
-
-            var status = http.StatusBadRequest
 
             defer db.Close()
 
