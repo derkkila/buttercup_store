@@ -1,0 +1,57 @@
+# apiVersion: extensions/v1beta1
+#  kind: Ingress
+#  metadata:
+#    annotations:
+#      kubernetes.io/ingress.class: nginx
+#    name: example
+#    namespace: foo
+#  spec:
+#    rules:
+#      - host: www.example.com
+#        http:
+#          paths:
+#            - backend:
+#                serviceName: exampleService
+#                servicePort: 80
+#              path: /
+
+
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: buttercup-ingress
+  namespace: buttercup-store
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    #nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: ac9101950abc511e8a6af061e883a797-1810481914.us-west-2.elb.amazonaws.com
+    http:
+      paths:
+      - path: /shop
+        backend:
+          serviceName: webfrontend
+          servicePort: 8088
+      - path: /wstatic
+        backend:
+          serviceName: webfrontend
+          servicePort: 8088
+      - path: /admin
+        backend:
+          serviceName: adminfrontend
+          servicePort: 3000
+      - path: /astatic
+        backend:
+          serviceName: adminfrontend
+          servicePort: 3000
+      - path: /cart
+        backend:
+          serviceName: cartservice
+          servicePort: 4201
+      - path: /products
+        backend:
+          serviceName: productservice
+          servicePort: 6767
