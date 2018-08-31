@@ -229,4 +229,36 @@ var routes = Routes{
             http.Redirect(w, r, r.Referer(), http.StatusSeeOther)
         },
   },
+  Route{
+    "DeleteOrder",                                     // Name
+    "GET",                                            // HTTP method
+    "/orders/delete/{orderId}",                          // Route pattern
+    func(w http.ResponseWriter, r *http.Request) {
+                log.Println("Deleting /orders/")
+                var id = mux.Vars(r)["orderId"]
+
+                db, err := sql.Open("mysql","root:test@tcp(ordersdb:3306)/orders")
+
+                rows,err2 := db.Query("delete from order_list where order_id=?",id)
+
+                log.Println(rows)
+                log.Println(err2)
+
+                var status = http.StatusBadRequest
+
+                switch {
+                case err2 != nil:
+                        log.Fatal(err)
+                        return
+                default:
+                        status = http.StatusOK
+                        defer rows.Close()
+                        defer db.Close()
+                }
+
+                w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+                w.WriteHeader(http.StatusOK)
+                w.Write([]byte("{\"result\":\"OK\"}"))
+        },
+  },
 }
