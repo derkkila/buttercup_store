@@ -3,8 +3,7 @@ extends layout
 block content
   h1= title
   h2= price
-  p
-  | #{description}
+  p #{description}
   br
   form(name='product', method='post', action='/cart/add/')
       input(type="hidden" name="user_id" value=1)
