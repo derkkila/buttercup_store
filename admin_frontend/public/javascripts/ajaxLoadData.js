@@ -45,8 +45,8 @@ $(document).ready(function() {
 					var orderRow = '<tr>' +
                     '<td>' + order.id + '</td>' +
                     '<td>' + order.user_id + '</td>' +
-                    '<td>' + order.total + '</td>' +
                     '<td>' + order.qty + '</td>' +
+                    '<td>' + order.total + '</td>' +
                     '<td><a href="/admin/edit_product?id='+order.id+'">Edit</a></td>' +
                     '<td><a href="http://'+window.location.hostname+'/orders/delete/'+order.id+'">Delete</a></td>' +
                     '</tr>';
