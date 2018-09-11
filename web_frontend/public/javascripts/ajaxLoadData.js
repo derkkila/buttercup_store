@@ -6,11 +6,11 @@ $(document).ready(function() {
 	switch( window.location.pathname )
 	{
 	    case "/shop":
-	        target = 1;
+	        target = 0;
 	        break;
 
 	    case "/shop/cart":
-	        target = 2;
+	        target = 1;
 	        break;
 	    /* add other cases */
 	}
