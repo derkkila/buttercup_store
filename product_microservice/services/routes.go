@@ -316,15 +316,10 @@ var routes = Routes{
 
       log.Println(id)
 
-      if r.Referer()=="http://localhost:3000/admin/add_product"{
-        log.Println("Redirect back to admin")
-        http.Redirect(w, r, "http://localhost:3000/admin/", http.StatusSeeOther)
-      } else {
-        log.Println("Return JSON")
-        w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-        w.WriteHeader(http.StatusOK)
-        w.Write([]byte("{\"result\":\"OK\"}"))
-      }
+      log.Println("Return JSON")
+      w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+      w.WriteHeader(http.StatusOK)
+      w.Write([]byte("{\"result\":\"OK\"}"))
     },
   },
 }
