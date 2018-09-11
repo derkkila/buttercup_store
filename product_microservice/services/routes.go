@@ -195,15 +195,13 @@ var routes = Routes{
                 db, err := sql.Open("mysql","root:test@tcp(productdb:3306)/products")
 
                 var productId = mux.Vars(r)["productId"]
-
-                var (
-                  id int
-                  name string
-                  filepath string
-                )
-                rows, err2 := db.Query("select * from product_images where id = ?", productId)
-
                 var status = http.StatusOK
+
+                rows, err2 := db.Query("select * from product_images where id = ?", productId)
+                if err2 != nil {
+                  log.Fatal(err2)
+                  status = http.StatusInternalServerError
+                }
 
                 defer rows.Close()
 
