@@ -187,6 +187,71 @@ var routes = Routes{
         },
   },
   Route{
+    "GetProductImages",                                     // Name
+    "GET",                                            // HTTP method
+    "/products/images/{productId}",                          // Route pattern
+    func(w http.ResponseWriter, r *http.Request) {
+                log.Println("Calling /products/images/{productId}")
+                db, err := sql.Open("mysql","root:test@tcp(productdb:3306)/products")
+
+                var productId = mux.Vars(r)["productId"]
+
+                var (
+                  id int
+                  name string
+                  filepath string
+                )
+                rows, err2 := db.Query("select * from product_images where id = ?", productId)
+
+                status = http.StatusOK
+
+                defer rows.Close()
+
+                columns, err := rows.Columns()
+                if err != nil {
+                  log.Fatal(err)
+                  status = http.StatusInternalServerError
+                }
+
+                count := len(columns)
+                tableData := make([]map[string]interface{}, 0)
+                values := make([]interface{}, count)
+                valuePtrs := make([]interface{}, count)
+                for rows.Next() {
+                    for i := 0; i < count; i++ {
+                        valuePtrs[i] = &values[i]
+                    }
+                    rows.Scan(valuePtrs...)
+                    entry := make(map[string]interface{})
+                    for i, col := range columns {
+                        var v interface{}
+                        val := values[i]
+                        b, ok := val.([]byte)
+                        if ok {
+                            v = string(b)
+                        } else {
+                            v = val
+                        }
+                        entry[col] = v
+                    }
+                    tableData = append(tableData, entry)
+                }
+                jsonData, err := json.Marshal(tableData)
+                if err != nil {
+                  log.Fatal(err)
+                  status = http.StatusInternalServerError
+                }
+                fmt.Println(string(jsonData))
+
+                defer db.Close()
+
+                w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+                w.Header().Set("Access-Control-Allow-Origin", "*")
+                w.WriteHeader(status)
+                w.Write([]byte(jsonData))
+        },
+  },
+  Route{
   "UpdateProduct",                                     // Name
   "POST",                                            // HTTP method
   "/products/{productId}",                          // Route pattern
