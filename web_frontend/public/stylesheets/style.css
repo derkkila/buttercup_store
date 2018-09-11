@@ -34,7 +34,6 @@ a {
 #content {
   padding: 0 50px;
   float: left;
-  width: 100%;
 }
 
 #payment {
@@ -52,4 +51,8 @@ a {
 
 #productList thead {
   background-color: #4CAF50;
+}
+
+#productList tr:nth-child(even) {
+  background-color: #d2ddd3;
 }
