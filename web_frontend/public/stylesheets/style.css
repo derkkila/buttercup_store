@@ -40,6 +40,7 @@ a {
   float: right;
   border: 1px solid black;
   padding: 20px;
+  width: 200px;
 }
 
 #productList {
