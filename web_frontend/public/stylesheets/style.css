@@ -33,6 +33,13 @@ a {
 
 #content {
   padding: 0 50px;
+  float: left;
+}
+
+#payment {
+  float: right;
+  border: 1px solid black;
+  padding: 20px;
 }
 
 #productList {
