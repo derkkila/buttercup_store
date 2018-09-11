@@ -19,4 +19,14 @@ This e-book gives you a deep dive into what collectd is and how you can begin in
 <ul>
 <li>Get and configure collectd</li>
 <li>Analyze collectd data</li>
-<li>Use Splunk and collectd together to analyze large amounts of infrastructure data</li>", "ebook","how-to",9.99,1000);
+<li>Use Splunk and collectd together to analyze large amounts of infrastructure data</li>", "book","how-to",9.99,1000);
+
+CREATE TABLE product_images
+(
+id INTEGER,
+name TEXT,
+filepath TEXT
+) COMMENT='Lists images for products';
+
+INSERT INTO product_images (id,name,filepath)
+VALUES (1,"primary_image","/istatic/collectd.png");
