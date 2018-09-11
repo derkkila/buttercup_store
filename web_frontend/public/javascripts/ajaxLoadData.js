@@ -2,6 +2,21 @@ $(document).ready(function() {
 
 	ajaxGet();
 
+	var target = 0;
+	switch( window.location.pathname )
+	{
+	    case "/shop":
+	        target = 1;
+	        break;
+
+	    case "/shop/cart":
+	        target = 2;
+	        break;
+	    /* add other cases */
+	}
+
+	$($("#navmenu a")[target]).addClass("active");
+
 	// DO GET
 	function ajaxGet(){
 		$.ajax({
