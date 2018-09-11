@@ -203,7 +203,7 @@ var routes = Routes{
                 )
                 rows, err2 := db.Query("select * from product_images where id = ?", productId)
 
-                status = http.StatusOK
+                var status = http.StatusOK
 
                 defer rows.Close()
 
