@@ -3,11 +3,12 @@ extends layout
 block content
   #content
     h1= title
-    h2= price
     p !{description}
     br
-    form(name='product', method='post', action='/cart/add/')
-        input(type="hidden" name="user_id" value=1)
-        input(type="hidden" name="product_id" value=id)
-        input(type="hidden" name="qty" value=1)
-        input(type='submit', value='Add ToCart')
+    #payment
+      h2= price
+      form(name='product', method='post', action='/cart/add/')
+          input(type="hidden" name="user_id" value=1)
+          input(type="hidden" name="product_id" value=id)
+          input(type="hidden" name="qty" value=1)
+          input(type='submit', value='Add ToCart')
