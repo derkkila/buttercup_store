@@ -31,12 +31,11 @@ a {
   color: white;
 }
 
-#header {
+#content {
   padding: 0 50px;
 }
 
 #productList {
-  padding: 0 50px;
   width: 100%;
   border-spacing: 0px;
 }

@@ -1,34 +1,35 @@
 extends layout
 
 block content
-  h1= title
-  div
-  - var total = 0
-  - var qty = 0
-      table#productList
-        thead
-          tr
-            th Name
-            th Price
-            th Quantity
-            th
-        tbody
-        each item in cart
-          tr
-            td= item.product_id
-            td= item.user_id
-            td= item.qty
-            - total = total + item.qty
-            - qty = qty + item.qty
-            td
-              a(href="/cart/delete/"+item.user_id+"/"+item.product_id) Remove
-  br
-  h2= total
-  br
-  form(name='order', method='post', action='/orders/add/')
-      input(type="hidden" name="user_id" value=1)
-      input(type="hidden" name="total" value=total)
-      input(type="hidden" name="qty" value=qty)
-      input(type='submit', value='Place Order')
-  form(name='clear', method='get', action='/cart/clear/1')
-      input(type='submit', value='Clear Cart')
+  #content
+    h1= title
+    div
+    - var total = 0
+    - var qty = 0
+        table#productList
+          thead
+            tr
+              th Name
+              th Price
+              th Quantity
+              th
+          tbody
+          each item in cart
+            tr
+              td= item.product_id
+              td= item.user_id
+              td= item.qty
+              - total = total + item.qty
+              - qty = qty + item.qty
+              td
+                a(href="/cart/delete/"+item.user_id+"/"+item.product_id) Remove
+    br
+    h2= total
+    br
+    form(name='order', method='post', action='/orders/add/')
+        input(type="hidden" name="user_id" value=1)
+        input(type="hidden" name="total" value=total)
+        input(type="hidden" name="qty" value=qty)
+        input(type='submit', value='Place Order')
+    form(name='clear', method='get', action='/cart/clear/1')
+        input(type='submit', value='Clear Cart')

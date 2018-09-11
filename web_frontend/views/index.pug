@@ -1,16 +1,16 @@
 extends layout
 
 block content
-  #header
+  #content
     h1= title
     p Welcome to #{title}
-  script(src='/wstatic/javascripts/ajaxLoadData.js')
-  table#productList
-    thead
-      tr
-        th Name
-        th Type
-        th Category
-        th Price
-        th Quantity
-    tbody
+    script(src='/wstatic/javascripts/ajaxLoadData.js')
+    table#productList
+      thead
+        tr
+          th Name
+          th Type
+          th Category
+          th Price
+          th Quantity
+      tbody
