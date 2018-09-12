@@ -31,6 +31,10 @@ spec:
   - host: ac9101950abc511e8a6af061e883a797-1810481914.us-west-2.elb.amazonaws.com
     http:
       paths:
+      - path: /
+        backend:
+          serviceName: ghost
+          servicePort: 2368
       - path: /shop
         backend:
           serviceName: webfrontend
