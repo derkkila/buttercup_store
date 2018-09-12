@@ -3,10 +3,8 @@ import (
   "net/http"
   "database/sql"
   _ "./mysql"
-  "../model"
   "log"
   "fmt"
-  "strconv"
   "encoding/json"
   "./mux-master"
   "strings"
@@ -141,6 +139,7 @@ var routes = Routes{
                 db, err := sql.Open("mysql","root:test@tcp(productdb:3306)/products")
 
                 var productId = mux.Vars(r)["productId"]
+                var status = http.StatusOK
 
                 rows, err2 := db.Query("select * from product_list l left join product_images i on l.id=i.id where l.id = ?", productId)
 
