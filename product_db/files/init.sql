@@ -29,4 +29,4 @@ filepath TEXT
 ) COMMENT='Lists images for products';
 
 INSERT INTO product_images (id,name,filepath)
-VALUES (1,"primary_image","/istatic/collectd.png");
+VALUES (1,"primary_image","/wstatic/images/a-beginners-guide-to-collectd.png");
