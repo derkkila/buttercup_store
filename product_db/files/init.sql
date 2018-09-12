@@ -24,9 +24,9 @@ This e-book gives you a deep dive into what collectd is and how you can begin in
 CREATE TABLE product_images
 (
 id INTEGER,
-name TEXT,
+imgname TEXT,
 filepath TEXT
 ) COMMENT='Lists images for products';
 
-INSERT INTO product_images (id,name,filepath)
+INSERT INTO product_images (id,imgname,filepath)
 VALUES (1,"primary_image","/wstatic/images/a-beginners-guide-to-collectd.png");
