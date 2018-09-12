@@ -1,38 +1,37 @@
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: productservice
-#  labels:
-#    name: productservice
-#  namespace: buttercup-store
-#spec:
-#  ports:
-#    # the port that this service should serve on
-#  - port: 6767 
-#    targetPort: 6767
-#  selector:
-#    name: productservice
-
-
-
-
-
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name:  productservice 
+  name: productservice
   namespace: buttercup-store
   labels:
     app: buttercup-store
     tier: middleware
 spec:
-  type: LoadBalancer
+  #type: LoadBalancer
+  type: ClusterIP
+  ports:
+    # the port that this service should serve on
+  - protocol: TCP
+    port: 6767
+    targetPort: 6767
   selector:
     name: productservice
-  ports:
-    - name: productservice
-      port: 6767
-      targetPort: 6767
+
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name:  productservice 
+#  namespace: buttercup-store
+#  labels:
+#    app: buttercup-store
+#    tier: middleware
+#spec:
+#  type: LoadBalancer
+#  selector:
+#    name: productservice
+#  ports:
+#    - name: productservice
+#      port: 6767
+#      targetPort: 6767
