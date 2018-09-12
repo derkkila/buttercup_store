@@ -142,48 +142,57 @@ var routes = Routes{
 
                 var productId = mux.Vars(r)["productId"]
 
-                var (
-                  id int
-                  name string
-                  description string
-                  prodtype string
-                  category string
-                  price float64
-                  qty int
-                )
-                err2 := db.QueryRow("select * from product_list where id = ?", productId).Scan(&id, &name, &description, &prodtype, &category, &price, &qty)
+                rows, err2 := db.Query("select * from product_list l left join product_images i on l.id=i.id where l.id = ?", productId)
 
-                var status = http.StatusBadRequest
-
-                switch {
-                case err2 == sql.ErrNoRows:
-                        log.Printf("No Product with that ID.")
-                        status = http.StatusNoContent
-                case err2 != nil:
-                        log.Fatal(err)
-                        status = http.StatusInternalServerError
-                default:
-                        fmt.Printf("Product Name is %s\n", name)
-                        status = http.StatusOK
+                if err2 != nil {
+                  log.Fatal(err2)
+                  status = http.StatusInternalServerError
                 }
 
-                product := model.Product{
-                  Id: strconv.Itoa(id),
-                  Name: name,
-                  Description: description,
-                  ProdType: prodtype,
-                  Category: category,
-                  Price: strconv.FormatFloat(price, 'E', 2, 32),
-                  Qty: strconv.Itoa(qty),
+                defer rows.Close()
+
+                columns, err := rows.Columns()
+                if err != nil {
+                  log.Fatal(err)
+                  status = http.StatusInternalServerError
                 }
-                jsonBytes, _ := json.Marshal(product)
-                //var output = fmt.Sprintf("%v",jsonBytes)
-                log.Println(product.Id, product.Name)
+
+                count := len(columns)
+                tableData := make([]map[string]interface{}, 0)
+                values := make([]interface{}, count)
+                valuePtrs := make([]interface{}, count)
+                for rows.Next() {
+                    for i := 0; i < count; i++ {
+                        valuePtrs[i] = &values[i]
+                    }
+                    rows.Scan(valuePtrs...)
+                    entry := make(map[string]interface{})
+                    for i, col := range columns {
+                        var v interface{}
+                        val := values[i]
+                        b, ok := val.([]byte)
+                        if ok {
+                            v = string(b)
+                        } else {
+                            v = val
+                        }
+                        entry[col] = v
+                    }
+                    tableData = append(tableData, entry)
+                }
+                jsonData, err := json.Marshal(tableData)
+                if err != nil {
+                  log.Fatal(err)
+                  status = http.StatusInternalServerError
+                }
+                fmt.Println(string(jsonData))
 
                 defer db.Close()
+
                 w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+                w.Header().Set("Access-Control-Allow-Origin", "*")
                 w.WriteHeader(status)
-                w.Write([]byte(jsonBytes))
+                w.Write([]byte(jsonData))
         },
   },
   Route{
