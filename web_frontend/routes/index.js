@@ -49,8 +49,9 @@ router.get('/shop/:id', function(req, res, next) {
     // The whole response has been received. Print out the result.
     resp.on('end', () => {
       var product=JSON.parse(data);
+      product=product[0];
       product.price = Number(product.price).toFixed(2);
-      res.render('product_view', { title: product.name, id: product.id, name: product.name, description: product.description, prodtype: product.prodtype, category: product.category, price: product.price, qty: product.qty });
+      res.render('product_view', { title: product.name, id: product.id, name: product.name, description: product.description, prodtype: product.prodtype, category: product.category, price: product.price, qty: product.qty, filepath: product.filepath });
     });
 
   }).on("error", (err) => {
