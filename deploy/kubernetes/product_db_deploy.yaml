@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: productdb 
+  name: productdb
   labels:
     name: productdb
   namespace: buttercup-store
@@ -14,13 +14,13 @@ spec:
         app: buttercup-store
         name: productdb
         role: mysql
-        tier: db 
+        tier: db
     spec:
       containers:
         - name: productdb
           #image: derkkila/product_db
-          image: matthewmodestino/productdb:0.0.1
+          image: derkkila/product_db:latest
           imagePullPolicy: Always
           ports:
-            - name: mysql 
+            - name: mysql
               containerPort: 3306
