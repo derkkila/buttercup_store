@@ -16,3 +16,11 @@ order_id INTEGER,
 product_id INTEGER,
 qty INTEGER
 ) COMMENT = "Lists products purchased per order";
+
+CREATE TABLE order_emails
+(
+order_id INTEGER,
+email TEXT,
+first_name TEXT,
+last_name TEXT
+) COMMENT = "Lists emails for each order";
