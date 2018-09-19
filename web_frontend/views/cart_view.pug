@@ -26,7 +26,7 @@ block content
     br
     h2= total
     br
-    form(name='order', method='post', action='/shop/checkout/')
+    form(name='order', method='get', action='/shop/checkout/')
         input(type="hidden" name="user_id" value=1)
         input(type="hidden" name="total" value=total)
         input(type="hidden" name="qty" value=qty)
