@@ -226,7 +226,7 @@ var routes = Routes{
           		panic(err)
           	}
 
-            http.Redirect(w, r, r.Referer(), http.StatusSeeOther)
+            http.Redirect(w, r, "/shop/thankyou", http.StatusSeeOther)
         },
   },
   Route{
