@@ -34,6 +34,30 @@ router.get('/shop/cart', function(req, res, next) {
   });
 });
 
+router.get('/shop/checkout', function(req, res, next) {
+  var id = 1;
+  const http = require('http');
+  console.log('http://cartservice:4201/cart/'+id)
+
+  http.get('http://cartservice:4201/cart/'+id, (resp) => {
+    let data = '';
+
+    // A chunk of data has been recieved.
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      var cart=JSON.parse(data);
+      res.render('checkout_view', { title: "Checkout", cart: cart })
+    });
+
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
+  });
+});
+
 router.get('/shop/:id', function(req, res, next) {
   var id = req.params.id;
   const http = require('http');

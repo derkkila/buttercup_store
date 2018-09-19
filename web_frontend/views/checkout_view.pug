@@ -26,10 +26,12 @@ block content
     br
     h2= total
     br
-    form(name='order', method='post', action='/shop/checkout/')
+    form(name='order', method='post', action='/orders/add/')
         input(type="hidden" name="user_id" value=1)
         input(type="hidden" name="total" value=total)
         input(type="hidden" name="qty" value=qty)
+        input(type="text" name="email" value="email address")
+        input(type="text" name="name" value="name")
         input(type='submit', value='Place Order')
     form(name='clear', method='get', action='/cart/clear/1')
         input(type='submit', value='Clear Cart')
