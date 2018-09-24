@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ghost
+  namespace: buttercup-store
+  labels:
+    app: ghost
+    app: buttercup-store
+spec:
+  #type: LoadBalancer
+  type: ClusterIP
+  ports:
+    # the port that this service should serve on
+  - protocol: TCP
+    port: 2368
+    targetPort: 2368
+  selector:
+    name: ghost
