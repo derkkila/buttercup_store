@@ -1,0 +1,28 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ghost
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: ghost
+    spec:
+      containers:
+        - name: ghost
+          image: ghost:alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: ghost 
+              containerPort: 2368
+          volumeMounts:
+          - mountPath: /var/lib/ghost/content/
+            name: ghost-data
+      volumes:
+      - name: ghost-data
+        persistentVolumeClaim:
+          claimName: ghost-data
