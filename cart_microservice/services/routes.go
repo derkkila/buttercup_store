@@ -215,7 +215,7 @@ var routes = Routes{
             log.Println(id)
 
             log.Println("Redirect back to shop")
-            http.Redirect(w, r, r.Referer(), http.StatusSeeOther)
+            http.Redirect(w, r, r.Referer()+"?added=t", http.StatusSeeOther)
         },
   },
   Route{
