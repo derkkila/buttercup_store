@@ -58,3 +58,9 @@ a {
 #productList tr:nth-child(even) {
   background-color: #d2ddd3;
 }
+
+p.added {
+  background-color: #4CAF50;
+  padding: 10px;
+  visibility: collapse;
+}
