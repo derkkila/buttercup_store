@@ -1,5 +1,9 @@
 var express = require('express');
+var uuid = require('uuid');
+
 var router = express.Router();
+
+router.use(require('cookie-parser')());
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -7,6 +11,18 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/shop', function(req, res, next) {
+
+  let bc = req.cookies.bc_session;
+
+  if (!bc) {
+
+        // crude id gen for now
+        let transactionid=uuid.v1();
+        res.cookie('bc_session', transactionid);
+        req.cookies.bc_session = transactionid;
+
+    }
+
   res.render('index', { title: 'Buttercup Games' });
 });
 

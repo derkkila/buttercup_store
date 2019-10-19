@@ -190,6 +190,10 @@ var routes = Routes{
           	}
           	v := r.Form
 
+            userId:=r.Form.Get("user_id")
+            productId:=r.Form.Get("product_id")
+            qty:=r.Form.Get("qty")
+
             log.Println(v)
 
             db, errdb := sql.Open("mysql","root:test@tcp(cartdb:3306)/cart")
@@ -202,7 +206,7 @@ var routes = Routes{
           		panic(err2)
           	}
 
-            res, err3 := stmt.Exec(r.Form.Get("user_id"),r.Form.Get("product_id"),r.Form.Get("qty"))
+            res, err3 := stmt.Exec(userId,productId,qty)
             if err3 != nil {
           		panic(err3)
           	}
@@ -244,6 +248,34 @@ var routes = Routes{
             w.Header().Set("Content-Type", "application/json; charset=UTF-8")
             w.WriteHeader(http.StatusOK)
             w.Write([]byte("{\"result\":\"OK\"}"))
+        },
+  },
+  Route{
+    "DeleteItem",                                     // Name
+    "GET",                                            // HTTP method
+    "/cart/delete/{userId}/{productId}",                // Route pattern
+    func(w http.ResponseWriter, r *http.Request) {
+            log.Println("Delete Item from /cart for User")
+
+            var id = mux.Vars(r)["userId"]
+            var productId = mux.Vars(r)["productId"]
+
+            db, err := sql.Open("mysql","root:test@tcp(cartdb:3306)/cart")
+            if err != nil {
+          		panic(err)
+          	}
+            rows,err2 := db.Query("delete from cart_list where user_id=? AND product_id=?",id,productId)
+            if err2 != nil {
+          		panic(err2)
+          	}
+
+            log.Println(rows)
+            log.Println(err2)
+
+            defer db.Close()
+
+            log.Println("Redirect back to shop")
+            http.Redirect(w, r, r.Referer()+"?added=t", http.StatusSeeOther)
         },
   },
 }
