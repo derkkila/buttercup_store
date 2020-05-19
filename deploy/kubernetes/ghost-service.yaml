@@ -9,7 +9,8 @@ metadata:
     app: buttercup-store
 spec:
   #type: LoadBalancer
-  type: ClusterIP
+  #type: ClusterIP
+  type: NodePort
   ports:
     # the port that this service should serve on
   - protocol: TCP

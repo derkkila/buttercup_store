@@ -1,0 +1,50 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "buttercup-ingress"
+  namespace: "buttercup-store"
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  labels:
+    app: buttercup-store
+spec:
+  rules:
+  - http:
+      paths:
+        - backend:
+              serviceName: webfrontend
+              servicePort: 8088
+          path: /shop*
+        - backend:
+              serviceName: webfrontend
+              servicePort: 8088
+          path: /wstatic*
+        - backend:
+              serviceName: adminfrontend
+              servicePort: 3000
+          path: /admin*
+        - backend:
+              serviceName: adminfrontend
+              servicePort: 3000
+          path: /astatic*
+        - backend:
+              serviceName: cartservice
+              servicePort: 4201
+          path: /cart*
+        - backend:
+              serviceName: ordersservice
+              servicePort: 4201
+          path: /orders*
+        - backend:
+              serviceName: productservice
+              servicePort: 6767
+          path: /products*          
+        - backend:
+              serviceName: webfrontend
+              servicePort: 8088
+          path: /*
+#       - backend:
+#             serviceName: ghost
+#             servicePort: 2368
+#         path: /
