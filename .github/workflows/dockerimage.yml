@@ -9,10 +9,7 @@ jobs:
 
   admin_frontend:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: /home/runner/work/buttercup_store/buttercup_store/admin_frontend
-        
+       
     steps:
     - uses: docker/build-push-action@v1
       with:
@@ -21,3 +18,4 @@ jobs:
         repository: derkkila/admin_frontend
         tags: latest
         tag_with_sha: true
+        path: admin_frontend
