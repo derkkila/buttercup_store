@@ -11,11 +11,14 @@ jobs:
     runs-on: ubuntu-latest
        
     steps:
-    - uses: docker/build-push-action@v1
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: derkkila/admin_frontend
-        tags: latest
-        tag_with_sha: true
-        path: admin_frontend
+      - uses: actions/checkout@v2
+        
+      - name: Build and push docker image
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: derkkila/admin_frontend
+          tags: latest
+          tag_with_sha: true
+          path: admin_frontend
