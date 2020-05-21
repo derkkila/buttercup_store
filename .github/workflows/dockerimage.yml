@@ -7,13 +7,16 @@ on:
 
 jobs:
 
-  build:
-
+  admin_frontend:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        shell: bash
+        working-directory: /home/runner/work/buttercup_store/buttercup_store/admin_frontend
+        
     steps:
     - uses: actions/checkout@v2
     - name: Build the admin_frontend Docker image
-      run: docker build -f admin_frontend/Dockerfile --tag derkkila/admin_frontend:$(date +%s) .
+      run: docker build . --tag derkkila/admin_frontend:$(date +%s)
     - name: Push admin_frontend to Dockerhub
       run: docker push derkkila/admin_frontend:$(date +%s)
