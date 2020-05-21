@@ -1,0 +1,18 @@
+name: Docker Image CI
+
+on:
+  release:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the admin_frontend Docker image
+      run: docker build admin_frontend/Dockerfile --file Dockerfile --tag derkkila/admin_frontend:$(date +%s)
+    - name: Push admin_frontend to Dockerhub
+      run: docker push derkkila/admin_frontend:$(date +%s)
