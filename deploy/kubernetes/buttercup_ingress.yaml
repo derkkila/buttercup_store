@@ -28,7 +28,7 @@ metadata:
     #nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: www.tokamak.ga
+  - host:
     http:
       paths:
       - path: /

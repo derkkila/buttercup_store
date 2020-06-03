@@ -1,0 +1,141 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: buttercup-store
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartdb
+  labels:
+    name: cartdb
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: cartdb
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: cartdb
+        role: mysql
+        tier: db
+    spec:
+      containers:
+        - name: cartdb
+          image: derkkila/cart_db
+          imagePullPolicy: Always
+          ports:
+            - name: mysql
+              containerPort: 3306
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cartdb
+  labels:
+    name: cartdb
+  namespace: buttercup-store
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 3306
+    targetPort: 3306
+  selector:
+    name: cartdb
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ordersdb
+  labels:
+    name: ordersdb
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: ordersdb
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: ordersdb
+        role: mysql
+        tier: db
+    spec:
+      containers:
+        - name: ordersdb
+          #image: derkkila/product_db
+          image: derkkila/orders_db
+          imagePullPolicy: Always
+          ports:
+            - name: mysql
+              containerPort: 3306
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ordersdb
+  labels:
+    name: ordersdb
+  namespace: buttercup-store
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 3306
+    targetPort: 3306
+  selector:
+    name: ordersdb
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productdb
+  labels:
+    name: productdb
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: productdb
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: productdb
+        role: mysql
+        tier: db
+    spec:
+      containers:
+        - name: productdb
+          image: derkkila/product_db:latest
+          imagePullPolicy: Always
+          ports:
+            - name: mysql
+              containerPort: 3306
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: productdb
+  labels:
+    name: productdb
+  namespace: buttercup-store
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 3306
+    targetPort: 3306
+  selector:
+    name: productdb
