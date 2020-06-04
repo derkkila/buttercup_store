@@ -21,7 +21,7 @@ $(document).ready(function() {
 	function ajaxGet(){
 		$.ajax({
 			type : "GET",
-			url : "http://"+window.location.hostname+"/products/",
+			url : "/products/",
 			success: function(result){
 				$.each(result, function(i, product){
 

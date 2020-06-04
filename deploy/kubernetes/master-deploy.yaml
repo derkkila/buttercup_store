@@ -43,7 +43,6 @@ metadata:
   namespace: buttercup-store
 spec:
   ports:
-    # the port that this service should serve on
   - port: 3306
     targetPort: 3306
   selector:
@@ -72,7 +71,6 @@ spec:
     spec:
       containers:
         - name: ordersdb
-          #image: derkkila/product_db
           image: derkkila/orders_db
           imagePullPolicy: Always
           ports:
@@ -89,7 +87,6 @@ metadata:
   namespace: buttercup-store
 spec:
   ports:
-    # the port that this service should serve on
   - port: 3306
     targetPort: 3306
   selector:
@@ -134,8 +131,340 @@ metadata:
   namespace: buttercup-store
 spec:
   ports:
-    # the port that this service should serve on
   - port: 3306
     targetPort: 3306
   selector:
     name: productdb
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartservice
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: cartservice
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: cartservice
+        role: cartservice
+        tier: middleware
+    spec:
+      containers:
+        - name: cartservice
+          image: derkkila/cart_microservice
+          imagePullPolicy: Always
+          ports:
+            - name: cartservice
+              containerPort: 4201
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cartservice
+  namespace: buttercup-store
+  labels:
+    app: buttercup-store
+    tier: middleware
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 4201
+    targetPort: 4201
+  selector:
+    name: cartservice
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ordersservice
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: ordersservice
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: ordersservice
+        role: ordersservice
+        tier: middleware
+    spec:
+      containers:
+        - name: ordersservice
+          image: derkkila/orders_microservice
+          imagePullPolicy: Always
+          ports:
+            - name: ordersservice
+              containerPort: 4201
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ordersservice
+  namespace: buttercup-store
+  labels:
+    app: buttercup-store
+    tier: middleware
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 4201
+    targetPort: 4201
+  selector:
+    name: ordersservice
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productservice
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: productservice
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: productservice
+        role: productservice
+        tier: middleware
+    spec:
+      containers:
+        - name: productservice
+          image: derkkila/product_microservice
+          imagePullPolicy: Always
+          ports:
+            - name: productservice
+              containerPort: 6767
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: productservice
+  namespace: buttercup-store
+  labels:
+    app: buttercup-store
+    tier: middleware
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 6767
+    targetPort: 6767
+  selector:
+    name: productservice
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webfrontend
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: webfrontend
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: webfrontend
+        role: webfrontend
+        tier: client
+    spec:
+      containers:
+        - name: webfrontend
+          image: derkkila/web_frontend
+          imagePullPolicy: Always
+          ports:
+            - name: webfrontend
+              containerPort: 8088
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webfrontend
+  namespace: buttercup-store
+  labels:
+    app: buttercup-store
+    tier: frontend
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 8088
+    targetPort: 8088
+  selector:
+    name: webfrontend
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminfrontend
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: adminfrontend
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: adminfrontend
+        role: adminfrontend
+        tier: client
+    spec:
+      containers:
+        - name: adminfrontend
+          image: derkkila/admin_frontend
+          imagePullPolicy: Always
+          ports:
+            - name: adminfrontend
+              containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminfrontend
+  namespace: buttercup-store
+  labels:
+    app: buttercup-store
+    tier: frontend
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
+  selector:
+    name: adminfrontend
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ghost-data
+  namespace: buttercup-store
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost
+  namespace: buttercup-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: ghost
+  template:
+    metadata:
+      labels:
+        app: buttercup-store
+        name: ghost
+    spec:
+      containers:
+        - name: ghost
+          image: ghost:alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: ghost
+              containerPort: 2368
+          volumeMounts:
+          - mountPath: /var/lib/ghost/content/
+            name: ghost-data
+      volumes:
+      - name: ghost-data
+        persistentVolumeClaim:
+          claimName: ghost-data
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ghost
+  namespace: buttercup-store
+  labels:
+    app: ghost
+    app: buttercup-store
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 2368
+    targetPort: 2368
+  selector:
+    name: ghost
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: buttercup-ingress
+  namespace: buttercup-store
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host:
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: ghost
+          servicePort: 2368
+      - path: /shop
+        backend:
+          serviceName: webfrontend
+          servicePort: 8088
+      - path: /wstatic
+        backend:
+          serviceName: webfrontend
+          servicePort: 8088
+      - path: /admin
+        backend:
+          serviceName: adminfrontend
+          servicePort: 3000
+      - path: /astatic
+        backend:
+          serviceName: adminfrontend
+          servicePort: 3000
+      - path: /cart
+        backend:
+          serviceName: cartservice
+          servicePort: 4201
+      - path: /orders
+        backend:
+          serviceName: ordersservice
+          servicePort: 4201
+      - path: /products
+        backend:
+          serviceName: productservice
+          servicePort: 6767
