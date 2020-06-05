@@ -7,7 +7,7 @@ $(document).ready(function() {
 	function productGet(){
 		$.ajax({
 			type : "GET",
-			url : "http://"+window.location.hostname+"/products/",
+			url : "/products/",
 			success: function(result){
 				$.each(result, function(i, product){
 
@@ -38,7 +38,7 @@ $(document).ready(function() {
 	function orderGet(){
 		$.ajax({
 			type : "GET",
-			url : "http://"+window.location.hostname+"/orders/",
+			url : "/orders/",
 			success: function(result){
 				$.each(result, function(i, order){
 

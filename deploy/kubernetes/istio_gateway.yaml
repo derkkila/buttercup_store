@@ -1,0 +1,90 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: buttercup-gw
+spec:
+  selector:
+    istio: ingressgateway # use istio default ingress gateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "dev.erkkila.co"
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: buttercup-vs
+spec:
+  hosts:
+  - "dev.erkkila.co"
+  gateways:
+  - "buttercup-gw"
+  http:
+  - match:
+    - uri:
+        prefix: /shop
+    route:
+    - destination:
+        port:
+          number: 8088
+        host: webfrontend
+  - match:
+    - uri:
+        prefix: /wstatic
+    route:
+    - destination:
+        port:
+          number: 8088
+        host: webfrontend
+  - match:
+    - uri:
+        prefix: /admin
+    route:
+    - destination:
+        port:
+          number: 3000
+        host: adminfrontend
+  - match:
+    - uri:
+        prefix: /astatic
+    route:
+    - destination:
+        port:
+          number: 3000
+        host: adminfrontend
+  - match:
+    - uri:
+        prefix: /cart
+    route:
+    - destination:
+        port:
+          number: 4201
+        host: cartservice
+  - match:
+    - uri:
+        prefix: /orders
+    route:
+    - destination:
+        port:
+          number: 4201
+        host: ordersservice
+  - match:
+    - uri:
+        prefix: /products
+    route:
+    - destination:
+        port:
+          number: 6767
+        host: productservice
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        port:
+          number: 8088
+        host: webfrontend

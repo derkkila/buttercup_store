@@ -42,8 +42,10 @@ metadata:
     name: cartdb
   namespace: buttercup-store
 spec:
+  type: NodePort
   ports:
-  - port: 3306
+  - protocol: TCP
+    port: 3306
     targetPort: 3306
   selector:
     name: cartdb
@@ -86,8 +88,10 @@ metadata:
     name: ordersdb
   namespace: buttercup-store
 spec:
+  type: NodePort
   ports:
-  - port: 3306
+  - protocol: TCP
+    port: 3306
     targetPort: 3306
   selector:
     name: ordersdb
@@ -130,8 +134,10 @@ metadata:
     name: productdb
   namespace: buttercup-store
 spec:
+  type: NodePort
   ports:
-  - port: 3306
+  - protocol: TCP
+    port: 3306
     targetPort: 3306
   selector:
     name: productdb
@@ -361,6 +367,16 @@ spec:
     name: adminfrontend
 
 ---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: standard
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
+  fsType: ext4
+
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -422,49 +438,3 @@ spec:
     targetPort: 2368
   selector:
     name: ghost
-
----
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: buttercup-ingress
-  namespace: buttercup-store
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-spec:
-  rules:
-  - host:
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: ghost
-          servicePort: 2368
-      - path: /shop
-        backend:
-          serviceName: webfrontend
-          servicePort: 8088
-      - path: /wstatic
-        backend:
-          serviceName: webfrontend
-          servicePort: 8088
-      - path: /admin
-        backend:
-          serviceName: adminfrontend
-          servicePort: 3000
-      - path: /astatic
-        backend:
-          serviceName: adminfrontend
-          servicePort: 3000
-      - path: /cart
-        backend:
-          serviceName: cartservice
-          servicePort: 4201
-      - path: /orders
-        backend:
-          serviceName: ordersservice
-          servicePort: 4201
-      - path: /products
-        backend:
-          serviceName: productservice
-          servicePort: 6767
